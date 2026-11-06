@@ -585,7 +585,7 @@ def note():
     <p>Hey %%HEY%%!</p><p>Just dropping by with a little digital Diwali surprise!</p>
     <p>Hope this festive season brings you loads of happiness, success, good health, delicious sweets, amazing memories, and plenty of reasons to smile.</p>
     <p>May your Dhanteras be prosperous and your Diwali week be full of fun, laughter, and positive vibes.</p>
-    <p>Keep shining and keep being awesome!</p><p>Wishing you a very Happy Dhanteras and a fantastic Diwali week!</p>
+    <p>Keep shining and keep being awesome!</p><p>Wishing you a very Happy Diwali and a fantastic Diwali week!</p>
     <p><b>Happy Diwali! 🪔✨</b></p></div><div class="garland"></div>"""
     show(body, "salvo(2)", css, 900)
 
