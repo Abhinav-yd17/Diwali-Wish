@@ -291,14 +291,17 @@
 # %%
 
 
-
-
-
-"""Divya's Diwali Festival Experience - a single-file Streamlit app."""
+"""Diwali Festival Experience (shareable with anyone) - a single-file Streamlit app."""
+import html as _html
 import streamlit as st
 import streamlit.components.v1 as components
 
-st.set_page_config(page_title="Divya's Diwali 🪔", page_icon="🪔", layout="wide")
+st.set_page_config(page_title="Happy Diwali 🪔", page_icon="🪔", layout="wide")
+
+# Optional personalisation: share the link as  https://your-app/?name=Anu
+NAME = _html.escape(str(st.query_params.get("name", "")).strip()[:30])
+PH = {"%%HEY%%": NAME or "there", "%%HEYU%%": (NAME or "there").upper(),
+      "%%COMMA%%": f", {NAME}" if NAME else "", "%%COMMAU%%": f", {NAME.upper()}" if NAME else ""}
 
 PAGES = ["intro", "hero", "treasure", "days", "diyas", "fun", "note", "finale", "game"]
 if "page" not in st.session_state:
@@ -414,6 +417,8 @@ MUSIC_BTN = '<button class="btn" id="mu" onclick="music()" style="padding:8px 16
 
 def show(body, js="", css="", h=640):
     html = BASE.replace("%%CSS%%", css).replace("%%BODY%%", body).replace("%%JS%%", js)
+    for k, v in PH.items():
+        html = html.replace(k, v)
     components.html(html, height=h, scrolling=True)
 
 
@@ -438,7 +443,7 @@ def intro():
     body = f"""<div class="stage"><div id="spark"></div><div id="dv">{DIYA % 'lit'}</div>
     <div style="margin-top:130px"><div class="line">Lights are ready...</div>
     <div class="line">Fireworks are ready...</div><div class="line">Sweets are probably ready too...</div>
-    <h1 id="hey">HEY DIVYA! 🪔</h1><p class="line" id="sub" style="font-size:1.3rem">Your personal Diwali surprise is here!</p></div></div>"""
+    <h1 id="hey">HEY %%HEYU%%! 🪔</h1><p class="line" id="sub" style="font-size:1.3rem">Your personal Diwali surprise is here!</p></div></div>"""
     js = """
     const L=$$('.line');setTimeout(()=>$('#spark').classList.add('grow'),400);
     setTimeout(()=>$('#dv').classList.add('on'),2600);
@@ -453,7 +458,7 @@ def intro():
 
 def hero():
     body = f"""<div class="garland"></div><h1 style="font-size:clamp(1.5rem,5vw,3rem)">A Festival Full of Lights, Laughter &amp; Good Vibes!</h1>
-    <p style="font-size:1.2rem">Welcome to your little Diwali celebration, Divya.</p>
+    <p style="font-size:1.2rem">Welcome to your little Diwali celebration%%COMMA%%.</p>
     {DIYA % 'lit big'}<button class="btn" onclick="salvo(5)">Fireworks! 🎆</button>{MUSIC_BTN}<p>Tap anywhere for a rocket 🚀 and wave your cursor around!</p>"""
     show(body, "salvo(4);confetti(80);setInterval(()=>salvo(2),6000);", "", 500)
     cols = st.columns(5)
@@ -577,7 +582,7 @@ def note():
     back_bar()
     css = ".card{max-width:640px;margin:30px auto;text-align:left;line-height:1.8;font-size:1.08rem;border:2px solid var(--gold)}"
     body = """<div class="garland"></div><h1>A Little Festive Note</h1><div class="glass card">
-    <p>Hey Divya!</p><p>Just dropping by with a little digital Diwali surprise!</p>
+    <p>Hey %%HEY%%!</p><p>Just dropping by with a little digital Diwali surprise!</p>
     <p>Hope this festive season brings you loads of happiness, success, good health, delicious sweets, amazing memories, and plenty of reasons to smile.</p>
     <p>May your Dhanteras be prosperous and your Diwali week be full of fun, laughter, and positive vibes.</p>
     <p>Keep shining and keep being awesome!</p><p>Wishing you a very Happy Dhanteras and a fantastic Diwali week!</p>
@@ -595,7 +600,7 @@ def finale():
     .fade{opacity:0;transition:opacity 1.5s}.fade.on{opacity:1}"""
     body = f"""<div class="rg" style="left:-120px;top:-120px"></div><div class="rg" style="right:-120px;bottom:-120px"></div>
     <div class="stage"><h1 class="big">LET THE FESTIVAL OF LIGHTS BEGIN!</h1>
-    <h2 class="fade" id="a" style="font-size:clamp(1.2rem,4vw,2.2rem)">HAPPY DHANTERAS &amp; HAPPY DIWALI WEEK, DIVYA! 🪔🎆</h2>
+    <h2 class="fade" id="a" style="font-size:clamp(1.2rem,4vw,2.2rem)">HAPPY DHANTERAS &amp; HAPPY DIWALI WEEK%%COMMAU%%! 🪔🎆</h2>
     <p class="fade" id="b" style="font-size:1.3rem">Stay awesome, keep smiling, and enjoy all the sweets!</p>
     <div class="row">{DIYA % 'lit'}{DIYA % 'lit'}{DIYA % 'lit'}{DIYA % 'lit'}{DIYA % 'lit'}</div>{MUSIC_BTN}</div>"""
     js = "salvo(8);confetti(220);setInterval(()=>{salvo(5);confetti(80);shake()},5000);setTimeout(()=>$('#a').classList.add('on'),1500);setTimeout(()=>$('#b').classList.add('on'),3000);"
